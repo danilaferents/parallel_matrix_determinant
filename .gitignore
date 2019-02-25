@@ -1,6 +1,6 @@
 # Prerequisites
-*.d
-
+*.exec
+Matrixtest
 # Compiled Object files
 *.slo
 *.lo
