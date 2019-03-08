@@ -30,11 +30,32 @@ namespace matrix
 			std::vector<long int>& operator[](const long int number);
 			//need in = overload
 			const std::vector<long int>& operator[](const long int number) const;
-			friend std::istream& operator >>(std::istream& input, Matrix& matrix);	
-			friend std::ostream& operator << (std::ostream& output, Matrix& matrix);
+			friend std::istream& operator >>(std::istream& input, Matrix& matrix)
+			{
+				for (int i = 0; i < matrix.size; ++i)
+				{
+					for (int j = 0; j < matrix.size; ++j)
+					{
+						input >> matrix[i][j];
+					}
+				}
+				return input;
+			}
+			friend std::ostream& operator << (std::ostream& output,const Matrix& matrix)
+			{
+				for (int i = 0; i < matrix.size; ++i)
+				{
+					for (int j = 0; j < matrix.size; ++j)
+					{
+						output <<  matrix[i][j] << " ";
+					}
+					output << std::endl;
+				}
+				return output;
+			}
 			//gets
 			long int getsize() const;
-
+			long int getfirst() const;
 			long int get_determinant();
 			Matrix get_minor(long int row, long int column) const;
 		private:
@@ -42,5 +63,6 @@ namespace matrix
 			std::vector<std::vector<long int> > matrix;
 	};
 	long int computing_determinant(const Matrix& _matrix);
+	long int computing_paralel_determinant(const Matrix& _matrix);
 }
 #endif /* matrix_hpp */

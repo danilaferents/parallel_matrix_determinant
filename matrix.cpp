@@ -4,7 +4,7 @@
 //
 //  Created by Мой Господин on 25/02/2019.
 //
-
+#include <future>
 #include "matrix.hpp"
 namespace matrix
 {
@@ -14,10 +14,10 @@ namespace matrix
 		this->size = size;
 		this->matrix.assign(size, std::vector<long int>(size, 0));
 	}
-	Matrix::Matrix(const Matrix& matrix)
+	Matrix::Matrix(const Matrix& _matrix)
 	{
-		this->size = matrix.size;
-		this->matrix = this->matrix;
+		this->size = _matrix.size;
+		this->matrix = _matrix.matrix;
 	}
 
 	//operators
@@ -33,7 +33,7 @@ namespace matrix
 		}
 		if (&matrix == this)
 		{
-			return *this;
+			return (*this);
 		}
 		// this->size = matrix.size;
 
@@ -52,30 +52,6 @@ namespace matrix
 	{
 		return matrix[number];
 	}
-	std::istream& operator >>(std::istream& input, Matrix& matrix)
-	{
-		for (int i = 0; i < matrix.size; ++i)
-		{
-			for (int j = 0; j < matrix.size; ++j)
-			{
-				input >> matrix[i][j];
-			}
-		}
-		return input;
-	}
-	std::ostream& operator << (std::ostream& output, Matrix& matrix)
-	{
-		for (int i = 0; i < matrix.size; ++i)
-		{
-			for (int j = 0; j < matrix.size; ++j)
-			{
-				output <<  matrix[i][j] << " ";
-			}
-			output << std::endl;
-		}
-		return output;
-	}
-
 	//gets
 	long int Matrix::getsize() const
 	{
@@ -86,7 +62,10 @@ namespace matrix
 	{
 		return computing_determinant(*this);
 	}
-
+	long int Matrix::getfirst() const
+	{
+		return (*this)[0][0];
+	}
 	Matrix Matrix::get_minor(long int row, long int column) const
 	{
 		Matrix newminor (this->size - 1);
@@ -127,14 +106,46 @@ namespace matrix
 	}
 	long int computing_determinant(const Matrix& _matrix)
 	{
+		if (_matrix.getsize() == 0)
+		{
+			return 1;
+		}
 		long int determinant = 0;
 		int sign = 1;
 		for (int i = 0; i < _matrix.getsize(); ++i)
 		{
-			determinant+=computing_determinant(_matrix.get_minor(0,i)) * sign;
+			determinant+=_matrix[0][i] *  sign * computing_determinant(_matrix.get_minor(0,i));
+			// std::cout<<deterdminant<<" -- ";
 			sign*=(-1);
 		}
+		return determinant;
+	}
+	void computing(const Matrix& _matrix, int i, std::vector<int>& threaddets) //не важно что передается по ссылке, все равно произойдет копирование матрицы
+	{
+		threaddets[i] = computing_determinant(_matrix);
+	}
+	long int computing_paralel_determinant(const Matrix& _matrix)
+	{
+		std::vector<std::thread> threads;
+		std::vector<int> threaddets(_matrix.getsize(), 0);
+		long int determinant  = 0;
+		int sign = 1;
+		for (int i = 0; i < _matrix.getsize(); ++i)
+		{
+			threads.push_back(std::thread (computing,_matrix.get_minor(0,i), i, std::ref(threaddets)));
+			// // determinant+=_matrix[0][i] * sign * det;
+			// std::for_each(threads.begin(), threads.end(),
+			// std::mem_fn(&std::thread::join));
+			threads[i].join();
 
+			// auto f1=std::async(std::launch::async,computing(),_matrix.get_minor(0,i));
+			// determinant += f1.get()*_matrix[0][i] * sign;
+		}
+		for (int i = 0; i < _matrix.getsize(); ++i)
+		{
+			determinant+=_matrix[0][i] * threaddets[i] * sign;
+			sign*=(-1);
+		}
 		return determinant;
 	}
 }
