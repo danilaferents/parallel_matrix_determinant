@@ -10,7 +10,7 @@
 using namespace matrix;
 
 std::vector<std::string> minorfiles = {"/Users/danilafurenc/AllMyProjects/spaceforprojects/C++ Projects/parallel_matrix_determinant/minor_1.txt", "/Users/danilafurenc/AllMyProjects/spaceforprojects/C++ Projects/parallel_matrix_determinant/minor_2.txt"};
-std::vector<std::string> determfiles = {"/Users/danilafurenc/AllMyProjects/spaceforprojects/C++ Projects/parallel_matrix_determinant/determinant_1.txt","/Users/danilafurenc/AllMyProjects/spaceforprojects/C++ Projects/parallel_matrix_determinant/determinant_2.txt"};
+std::vector<std::string> determfiles = {"/Users/danilafurenc/AllMyProjects/spaceforprojects/C++ Projects/parallel_matrix_determinant/determinant_1.txt","/Users/danilafurenc/AllMyProjects/spaceforprojects/C++ Projects/parallel_matrix_determinant/determinant_2.txt", "/Users/danilafurenc/AllMyProjects/spaceforprojects/C++ Projects/parallel_matrix_determinant/determinant_3.txt","/Users/danilafurenc/AllMyProjects/spaceforprojects/C++ Projects/parallel_matrix_determinant/determinant_4.txt", "/Users/danilafurenc/AllMyProjects/spaceforprojects/C++ Projects/parallel_matrix_determinant/determinant_5.txt"};
 int testnumber = 0;
 int not_paralel_time = 0;
 std::tuple <Matrix, Matrix> read_info_from_file(std::string name_of_file)
@@ -49,22 +49,22 @@ std::tuple <int, int, int> read_info1_from_file(std::string name_of_file)
         std::cerr << "File did not open!"<<std::endl;
     }
     int matrixsize;
-    int det;
+    long int det;
     input >> matrixsize >>det;
     // std::cout<<"_____________"<<std::endl;
     // std::cout<<matrixsize<<" "<<det;
-    Matrix matrix(matrixsize);
-    input >> matrix;
+    Matrix matrix1(matrixsize);
+    input >> matrix1;
     testnumber++;
-    int determ_not_paralel;
+    long int determ_not_paralel;
     start = std::chrono::high_resolution_clock::now();
-    determ_not_paralel = matrix.get_determinant();
+    determ_not_paralel = matrix1.get_determinant();
     stop = std::chrono::high_resolution_clock::now();
     std::chrono::duration<double> diff = (stop-start); 
     std::cout<<std::endl<<"Not parallel done! "<<std::chrono::duration_cast<std::chrono::microseconds>(stop-start).count()<<"ms."<<std::endl;
 
     start = std::chrono::high_resolution_clock::now();
-    long int determ_paralel = computing_paralel_determinant(matrix);
+    long int determ_paralel = computing_paralel_determinant(matrix1);
     stop = std::chrono::high_resolution_clock::now();
     diff = (stop-start); 
     std::cout<<std::endl<<"Parallel done! "<<std::chrono::duration_cast<std::chrono::microseconds>(stop-start).count()<<"ms."<<std::endl;
@@ -75,11 +75,6 @@ std::tuple <int, int, int> read_info1_from_file(std::string name_of_file)
 TEST(TestsMatrix,TestMinor_1)
 {
     auto firsttest = read_info_from_file(minorfiles[testnumber]);
-    // std::cout<<std::get<0> (firsttest);
-    // std::get<2> (firsttest);
-    // std::get<3> (firsttest);
-    // std::cout<<std::get<3> (firsttest);
-    // std::cout<<(std::get<0> (firsttest)).get_minor(std::get<1> (firsttest), std::get<2> (firsttest));
      ASSERT_EQ(std::get<0> (firsttest) == std::get<1> (firsttest),true);
     // ASSERT_EQ((std::get<0> (firsttest)).get_minor(std::get<1> (firsttest), std::get<2> (firsttest)) == std::get<3> (firsttest),true);
 }
@@ -97,9 +92,31 @@ TEST(TestsMatrix,TestDet_1)
     ASSERT_EQ(std::get<1> (firsttest) == std::get<2> (firsttest),true);
     // std::cout<<computing_determinant(std::get<0>(firsttest));
     // ASSERT_EQ(std::get<0>(firsttest).get_determinant(), std::get<1> (firsttest));
-
 }
-
+TEST(TestsMatrix,TestDet_2)
+{
+    auto firsttest = read_info1_from_file(determfiles[testnumber]);
+    ASSERT_EQ(std::get<0> (firsttest) == std::get<1> (firsttest),true);
+    ASSERT_EQ(std::get<1> (firsttest) == std::get<2> (firsttest),true);
+}
+TEST(TestsMatrix,TestDet_3)
+{
+    auto firsttest = read_info1_from_file(determfiles[testnumber]);
+    ASSERT_EQ(std::get<0> (firsttest) == std::get<1> (firsttest),true);
+    ASSERT_EQ(std::get<1> (firsttest) == std::get<2> (firsttest),true);
+}
+TEST(TestsMatrix,TestDet_4)
+{
+    auto firsttest = read_info1_from_file(determfiles[testnumber]);
+    ASSERT_EQ(std::get<0> (firsttest) == std::get<1> (firsttest),true);
+    ASSERT_EQ(std::get<1> (firsttest) == std::get<2> (firsttest),true);
+}
+TEST(TestsMatrix,TestDet_5)
+{
+    auto firsttest = read_info1_from_file(determfiles[testnumber]);
+    ASSERT_EQ(std::get<0> (firsttest) == std::get<1> (firsttest),true);
+    ASSERT_EQ(std::get<1> (firsttest) == std::get<2> (firsttest),true);
+}
  //g++ --std=c++11 -stdlib=libc++ matrix_main.cpp matrix.cpp  -lgtest -lpthread -o MatrixTest
 //valgrind   --leak-check=full --leak-resolution=high ./MatrixTest
 

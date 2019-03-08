@@ -129,21 +129,19 @@ namespace matrix
 		std::vector<std::thread> threads;
 		std::vector<int> threaddets(_matrix.getsize(), 0);
 		long int determinant  = 0;
-		int sign = 1;
-		for (int i = 0; i < _matrix.getsize(); ++i)
+		int sign = -1;
+		for (int i = 1; i < _matrix.getsize(); ++i)
 		{
-			threads.push_back(std::thread (computing,_matrix.get_minor(0,i), i, std::ref(threaddets)));
-			// // determinant+=_matrix[0][i] * sign * det;
-			// std::for_each(threads.begin(), threads.end(),
-			// std::mem_fn(&std::thread::join));
-			threads[i].join();
-
+			threads.push_back(std::thread(computing,_matrix.get_minor(0,i), i, std::ref(threaddets)));
 			// auto f1=std::async(std::launch::async,computing(),_matrix.get_minor(0,i));
-			// determinant += f1.get()*_matrix[0][i] * sign;
+			// determinant += f1.get() * _matrix[0][i] * sign;
 		}
-		for (int i = 0; i < _matrix.getsize(); ++i)
+		threaddets[0] = computing_determinant(_matrix.get_minor(0, 0));
+		std::for_each(threads.begin(), threads.end(),std::mem_fn(&std::thread::join));
+		determinant = _matrix[0][0] * threaddets[0];
+		for (int i = 0; i < _matrix.getsize() - 1; ++i)
 		{
-			determinant+=_matrix[0][i] * threaddets[i] * sign;
+			determinant+=_matrix[0][i + 1] * threaddets[i + 1] * sign;
 			sign*=(-1);
 		}
 		return determinant;
