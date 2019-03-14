@@ -9,8 +9,8 @@
 #include "matrix.hpp"
 using namespace matrix;
 
-std::vector<std::string> minorfiles = {"/Users/danilafurenc/AllMyProjects/spaceforprojects/C++ Projects/parallel_matrix_determinant/minor_1.txt", "/Users/danilafurenc/AllMyProjects/spaceforprojects/C++ Projects/parallel_matrix_determinant/minor_2.txt"};
-std::vector<std::string> determfiles = {"/Users/danilafurenc/AllMyProjects/spaceforprojects/C++ Projects/parallel_matrix_determinant/determinant_1.txt","/Users/danilafurenc/AllMyProjects/spaceforprojects/C++ Projects/parallel_matrix_determinant/determinant_2.txt", "/Users/danilafurenc/AllMyProjects/spaceforprojects/C++ Projects/parallel_matrix_determinant/determinant_3.txt","/Users/danilafurenc/AllMyProjects/spaceforprojects/C++ Projects/parallel_matrix_determinant/determinant_4.txt", "/Users/danilafurenc/AllMyProjects/spaceforprojects/C++ Projects/parallel_matrix_determinant/determinant_5.txt"};
+std::vector<std::string> minorfiles = {"/Users/danilafurenc/AllMyProjects/spaceforprojects/C++Projects/parallel_matrix_determinant/minor_1.txt", "/Users/danilafurenc/AllMyProjects/spaceforprojects/C++Projects/parallel_matrix_determinant/minor_2.txt"};
+std::vector<std::string> determfiles = {"/Users/danilafurenc/AllMyProjects/spaceforprojects/C++Projects/parallel_matrix_determinant/determinant_1.txt","/Users/danilafurenc/AllMyProjects/spaceforprojects/C++Projects/parallel_matrix_determinant/determinant_2.txt", "/Users/danilafurenc/AllMyProjects/spaceforprojects/C++Projects/parallel_matrix_determinant/determinant_3.txt","/Users/danilafurenc/AllMyProjects/spaceforprojects/C++Projects/parallel_matrix_determinant/determinant_4.txt", "/Users/danilafurenc/AllMyProjects/spaceforprojects/C++Projects/parallel_matrix_determinant/determinant_5.txt"};
 int testnumber = 0;
 int not_paralel_time = 0;
 std::tuple <Matrix, Matrix> read_info_from_file(std::string name_of_file)

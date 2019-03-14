@@ -66,39 +66,78 @@ namespace matrix
 	{
 		return (*this)[0][0];
 	}
+	std::ostream& operator << (std::ostream& output,const Matrix& matrix)
+	{
+		for (int i = 0; i < matrix.size; ++i)
+		{
+			for (int j = 0; j < matrix.size; ++j)
+			{
+				output <<  matrix[i][j] << " ";
+			}
+			output << std::endl;
+		}
+		return output;
+	}
+	std::istream& operator >>(std::istream& input, Matrix& matrix)
+	{
+		for (int i = 0; i < matrix.size; ++i)
+		{
+			for (int j = 0; j < matrix.size; ++j)
+			{
+				input >> matrix[i][j];
+			}
+		}
+		return input;
+	}
 	Matrix Matrix::get_minor(long int row, long int column) const
 	{
 		Matrix newminor (this->size - 1);
 
-		for (int i = 0; i < row; ++i)
-		{
-			for (int j = 0; j < column; ++j)
-			{
-				newminor[i][j] = this->matrix[i][j];
-			}
-		}
+		// for (int i = 0; i < row; ++i)
+		// {
+		// 	for (int j = 0; j < column; ++j)
+		// 	{
+		// 		newminor[i][j] = this->matrix[i][j];
+		// 	}
+		// }
 
-		for (int i = 0; i < row; ++i)
-		{
-			for (int j = column + 1; j < size; ++j)
-			{
-				newminor[i][j - 1] = this->matrix[i][j];
-			}
-		}
+		// for (int i = 0; i < row; ++i)
+		// {
+		// 	for (int j = column + 1; j < size; ++j)
+		// 	{
+		// 		newminor[i][j - 1] = this->matrix[i][j];
+		// 	}
+		// }
 
-		for (int i = row + 1; i < size; ++i)
-		{
-			for (int j = 0; j < column; ++j)
-			{
-				newminor[i - 1][j] = this->matrix[i][j];
-			}
-		}
+		// for (int i = row + 1; i < size; ++i)
+		// {
+		// 	for (int j = 0; j < column; ++j)
+		// 	{
+		// 		newminor[i - 1][j] = this->matrix[i][j];
+		// 	}
+		// }
 
-		for (int i = row + 1; i < size; ++i)
+		// for (int i = row + 1; i < size; ++i)
+		// {
+		// 	for (int j = column + 1; j < size; ++j)
+		// 	{
+		// 		newminor[i - 1][j - 1] = this->matrix[i][j];
+		// 	}
+		// }
+		for (int i = 0; i < size; ++i)
 		{
-			for (int j = column + 1; j < size; ++j)
+			for (int j = 0; j < size; ++j)
 			{
-				newminor[i - 1][j - 1] = this->matrix[i][j];
+				if (i >= 0 && i < row) 
+				{
+					if (j >=0 && j < column) newminor[i][j] = this->matrix[i][j];
+					if (j > column && j < size) newminor[i][j - 1] = this->matrix[i][j];
+				}
+				if (i > row && i < size) 
+				{
+					if (j >= 0 && j < column) newminor[i - 1][j] = this->matrix[i][j];
+					if (j > column && j < size) newminor[i - 1][j - 1] = this->matrix[i][j];
+				}
 			}
 		}
 
